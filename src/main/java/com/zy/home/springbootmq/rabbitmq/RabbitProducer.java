@@ -1,14 +1,20 @@
 package com.zy.home.springbootmq.rabbitmq;
 
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Component
+@RestController
 public class RabbitProducer {
 
-    @RabbitListener(queues = "hello")
-    public void listenerHello(String value){
-        System.out.println("收到消息 - - >"+value);
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @RequestMapping(value = "/helloRabbit")
+    public String helloRabbit(String queue,String value){
+        rabbitTemplate.convertAndSend(queue,value);
+        return "ok!";
     }
 
 }
