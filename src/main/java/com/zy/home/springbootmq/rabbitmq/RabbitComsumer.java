@@ -44,4 +44,16 @@ public class RabbitComsumer {
         channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
     }
 
+    @RabbitListener(queues = "fanout.a")
+    public void testFanoutExchangeA(String value,Message message,Channel channel) throws InterruptedException, IOException {
+        System.out.println("testFanoutExchangeA"+value);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+    }
+
+    @RabbitListener(queues = "fanout.b")
+    public void testFanoutExchangeB(String value,Message message,Channel channel) throws InterruptedException, IOException {
+        System.out.println("testFanoutExchangeB"+value);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.zy.home.springbootmq.rabbitmq;
 
-import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -29,6 +31,16 @@ public class RabbitConfig {
     }
 
     @Bean
+    public Queue aQueue(){
+        return new Queue("fanout.a");
+    }
+
+    @Bean
+    public Queue bQueue(){
+        return new Queue("fanout.b");
+    }
+
+    @Bean
     public RabbitTemplate rabbitTemplate(){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
 
@@ -48,6 +60,24 @@ public class RabbitConfig {
         });
 
         return rabbitTemplate;
+    }
+
+    //fanoutExchange/发布订阅
+    @Bean
+    public FanoutExchange fanoutExchange(){
+        return new FanoutExchange("fanoutExchange");
+    }
+
+    //将fanout.a绑定到fanoutExchange
+    @Bean
+    public Binding bindingFanoutExchangeA(Queue aQueue,FanoutExchange fanoutExchange){
+        return BindingBuilder.bind(aQueue).to(fanoutExchange);
+    }
+
+    //将fanout.b绑定到fanoutExchange
+    @Bean
+    public Binding bindingFanoutExchangeB(Queue bQueue,FanoutExchange fanoutExchange){
+        return BindingBuilder.bind(bQueue).to(fanoutExchange);
     }
 
 
