@@ -16,9 +16,16 @@ public class RabbitConfig {
     @Autowired
     private ConnectionFactory connectionFactory;
 
+    //简单模式--一个生产者，一个消费者
     @Bean
     public Queue hello(){
         return new Queue("hello");
+    }
+
+    //work模式--一个生产者，多个消费者，每个消费者获取到的消息唯一
+    @Bean
+    public Queue testQueueWork(){
+        return new Queue("test_queue_work");
     }
 
     @Bean

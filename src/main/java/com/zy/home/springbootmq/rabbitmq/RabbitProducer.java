@@ -17,4 +17,12 @@ public class RabbitProducer {
         return "ok!";
     }
 
+    @RequestMapping(value = "/testQueueWork")
+    public String testQueueWork(String queue){
+        for (int i=0;i<100; i++){
+            rabbitTemplate.convertAndSend("test_queue_work",i);
+        }
+        return "ok!";
+    }
+
 }

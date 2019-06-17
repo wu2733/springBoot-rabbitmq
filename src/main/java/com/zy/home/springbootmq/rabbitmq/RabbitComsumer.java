@@ -26,4 +26,22 @@ public class RabbitComsumer {
         System.out.println("收到消息 - - >"+value);
     }
 
+    @RabbitListener(queues = "test_queue_work")
+    public void testQueueWork1(String value,Message message,Channel channel) throws InterruptedException, IOException {
+        System.out.println("testQueueWork[1]"+value);
+        //basicQos 方法设置了当前信道最大预获取（prefetch）消息数量为1,
+        //prefetchCount 的默认值为0，即没有限制，队列会将所有消息尽快发给消费者
+        channel.basicQos(1);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+    }
+
+    @RabbitListener(queues = "test_queue_work")
+    public void testQueueWork2(String value,Message message,Channel channel) throws InterruptedException, IOException {
+        System.out.println("testQueueWork[2]"+value);
+        //basicQos 方法设置了当前信道最大预获取（prefetch）消息数量为1,
+        //prefetchCount 的默认值为0，即没有限制，队列会将所有消息尽快发给消费者
+        channel.basicQos(1);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+    }
+
 }
